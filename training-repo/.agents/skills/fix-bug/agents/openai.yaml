@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fix OrderHub Bug"
+  short_description: "Reproduce, diagnose, fix, review, and test OrderHub bugs"
+  default_prompt: "Use $fix-bug to diagnose and fix this OrderHub bug with a regression test."

@@ -1,0 +1,29 @@
+{
+  "description": "OrderHub safety and edit-audit hooks.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "^Bash$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/block-destructive-sql.ps1",
+            "statusMessage": "Checking command for destructive SQL"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "^apply_patch$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/log-edits.ps1",
+            "statusMessage": "Logging edited files"
+          }
+        ]
+      }
+    ]
+  }
+}
