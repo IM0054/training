@@ -115,6 +115,9 @@
     `.codex/hooks.json`。
   - 手動送入 `apply_patch` payload 驗證，成功記錄
     `hook-validation.txt` 並輸出 `systemMessage`。
+  - 移除原本額外加入的 `-ExecutionPolicy Bypass`，與 upstream 指南一致；
+    在本機 `RemoteSigned` policy 下重新驗證：安全 SQL exit 0、
+    `TRUNCATE TABLE` exit 2、edit audit exit 0 並成功寫入紀錄。
 
 ### 練習 2 — Bug 1：訂單分頁
 

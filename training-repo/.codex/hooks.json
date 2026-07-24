@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/block-destructive-sql.ps1",
+            "command": "powershell -NoProfile -File .codex/hooks/block-destructive-sql.ps1",
             "statusMessage": "Checking command for destructive SQL"
           }
         ]
@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/log-edits-codex.ps1",
+            "command": "powershell -NoProfile -File .codex/hooks/log-edits-codex.ps1",
             "statusMessage": "Logging edited files"
           }
         ]
