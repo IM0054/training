@@ -1,23 +1,14 @@
 ---
 name: fix-bug
-description: Reproduce, diagnose, minimally fix, review, test, and prepare a commit for one OrderHub bug. Use only when the user explicitly asks to fix a reported OrderHub defect or invokes $fix-bug.
+description: 依標準流程修復一個 bug：重現、定位、修復、回歸測試、commit。使用者明確要求修 bug 時才使用。
 ---
 
-# Fix an OrderHub bug
+依照以下流程修復使用者描述的 bug（症狀在使用者的訊息裡）：
 
-1. Restate the observable symptom and identify the page or workflow involved.
-2. Obtain concrete reproduction evidence such as page number, amount, status, or
-   stock before and after. Ask the user only when browser interaction cannot be
-   performed locally.
-3. Trace the request from controller to Core service to repository. Explain the
-   root cause and identify the missing test coverage before editing.
-4. Make the smallest production-code change that corrects the behavior. Do not
-   mix in unrelated cleanup or refactoring.
-5. Add a regression test that would fail with the original defect.
-6. Use the project `code-reviewer` agent when delegation is available. Address
-   correctness findings before continuing.
-7. Use `test-runner` to run the complete test suite.
-8. Ask the user to verify the original symptom in the browser when manual UI
-   verification is required.
-9. After verification, prepare one commit whose message states symptom, root
-   cause, and fix. Do not push without explicit approval.
+1. 先根據症狀推測涉及的頁面與流程，向使用者確認你對症狀的理解
+2. 從 Controller 往下追到 Service、Repository，定位根因；
+   說明根因後**等使用者確認**再動手修
+3. 用最小變更修復，不要順手重構無關的程式碼
+4. 使用code-reviewer來驗證改動
+5. 補一個回歸測試（先確認它在修復前會失敗的邏輯），使用test-runner跑 `dotnet test` 確認全綠
+6. 提示使用者回頁面實測，確認後以「症狀 → 根因 → 修法」格式撰寫 commit message 並 commit

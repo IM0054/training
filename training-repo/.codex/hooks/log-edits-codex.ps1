@@ -1,4 +1,4 @@
-$rawInput = [Console]::In.ReadToEnd()
+﻿$rawInput = [Console]::In.ReadToEnd()
 
 try {
     $payload = $rawInput | ConvertFrom-Json
@@ -36,5 +36,5 @@ foreach ($path in $paths) {
 }
 
 @{
-    systemMessage = "OrderHub edit hook logged $($paths.Count) changed file(s)."
+    systemMessage = "OrderHub 編輯 hook 已記錄 $($paths.Count) 個異動檔案。"
 } | ConvertTo-Json -Compress
