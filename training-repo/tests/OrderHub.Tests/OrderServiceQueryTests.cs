@@ -41,6 +41,36 @@ public class OrderServiceQueryTests
     }
 
     [Fact]
+    public async Task GetOrders_UsesOneBasedPageOffsets()
+    {
+        using var db = TestSetup.CreateContext();
+        var service = TestSetup.CreateOrderService(db);
+        var customer = TestSetup.AddCustomer(db);
+        var newestAt = new DateTime(2026, 7, 24, 12, 0, 0, DateTimeKind.Utc);
+
+        for (var i = 0; i < 45; i++)
+        {
+            db.Orders.Add(new Order
+            {
+                CustomerId = customer.Id,
+                Status = OrderStatus.Confirmed,
+                CreatedAt = i < 2 ? newestAt : newestAt.AddMinutes(-i)
+            });
+        }
+        db.SaveChanges();
+
+        var firstPage = await service.GetOrdersAsync(1, 20, null);
+        var lastPage = await service.GetOrdersAsync(3, 20, null);
+
+        Assert.Equal(20, firstPage.Items.Count);
+        Assert.Equal(newestAt, firstPage.Items[0].CreatedAt);
+        Assert.True(firstPage.Items[0].Id > firstPage.Items[1].Id);
+        Assert.Equal(5, lastPage.Items.Count);
+        Assert.Equal(newestAt.AddMinutes(-40), lastPage.Items[0].CreatedAt);
+        Assert.Equal(newestAt.AddMinutes(-44), lastPage.Items[^1].CreatedAt);
+    }
+
+    [Fact]
     public async Task GetCustomerOrders_ReturnsOnlyThatCustomersOrders()
     {
         using var db = TestSetup.CreateContext();
