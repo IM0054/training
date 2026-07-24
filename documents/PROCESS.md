@@ -126,6 +126,36 @@
 - Code review：無剩餘 finding。
 - 狀態：驗證完成，建立 Bug 1 獨立 commit。
 
+### 練習 2 — Bug 2：Gold 會員重複折扣
+
+- UI 重現資料：
+  - 商品：`SKU-1001 極光 無線滑鼠`
+  - 原價：NT$1,420.00
+  - Gold 重現訂單：`#201`
+  - 正確 9 折：NT$1,278.00
+  - 修正前頁面總額：NT$1,150.20
+  - Silver 對照訂單：`#202`
+  - Silver 正確及實際總額皆為 NT$1,349.00
+- 根因：Gold 建單時先把 `UnitPriceSnapshot` 折成 NT$1,278.00，
+  `CalculateTotal` 又在 subtotal 上套用一次 10% 折扣；Silver 的 snapshot
+  保留原價，所以沒有重複折扣。
+- 修正：所有會員的 `UnitPriceSnapshot` 都保存商品原價，會員折扣只在
+  `OrderService.CalculateTotal` 套用一次。
+- 回歸測試：
+  `CreateOrder_GoldCustomer_AppliesDiscountOnce`。
+- 修正前測試失敗：
+  - 預期 snapshot：1,420
+  - 實際 snapshot：1,278
+- 修正後完整測試：30 passed、0 failed。
+- Code review：無 finding；Standard、Silver 行為不變。
+- 修正後 UI 驗證訂單：`#203`
+  - snapshot：NT$1,420.00
+  - 折扣：NT$142.00
+  - 應付總額：NT$1,278.00
+  - 舊錯誤總額 NT$1,150.20 已消失。
+- 使用者已在瀏覽器確認訂單 `#203` 金額正確。
+- 狀態：驗證完成，建立 Bug 2 獨立 commit。
+
 ## 自我驗證（做到哪個階段答哪題）
 
 ### 第一階段 — Agentic Coding
