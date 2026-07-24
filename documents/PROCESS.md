@@ -190,6 +190,39 @@
 - 使用者已在瀏覽器確認訂單 `#204` 已取消且 `SKU-1001` 庫存為 24。
 - 狀態：驗證完成，建立 Bug 3 獨立 commit。
 
+### 練習 3 — 低庫存警示頁面
+
+- 使用者先核准分層實作計畫，再開始修改程式。
+- 新增路由：`GET /Products/LowStock?threshold=10`。
+- 分層：
+  - Core service 驗證門檻並決定近 30 天的起算時間。
+  - Repository 用單一 EF Core 查詢完成啟用商品過濾、庫存排序及銷量加總，
+    排除 `Cancelled` 訂單，沒有 N+1。
+  - Controller 只呼叫 service 並映射 ViewModel。
+  - ViewModel 使用 `DataAnnotations` 驗證門檻；View 使用 GET form。
+- 頁面驗證：
+  - 未帶參數時門檻為 10，顯示 5 筆。
+  - `threshold=3` 時顯示 1 筆。
+  - `threshold=0`、`threshold=-1` 都回 HTTP 200 並顯示
+    「庫存門檻必須大於 0」，不是 500。
+  - 5 筆商品依庫存 `2, 3, 3, 4, 4` 升冪排列，且全部套用
+    `table-danger`。
+  - 導覽列已加入「低庫存」連結。
+- 資料庫交叉驗證：
+  - `SKU-1014` 近 30 天共有 23 件訂單明細，其中 Cancelled 為 2 件。
+  - 頁面正確顯示 21 件，證明 Cancelled 已排除。
+- 新增 4 個 service 測試：
+  - 門檻過濾、剛好等於門檻時排除，以及庫存升冪排序。
+  - 排除停售商品。
+  - 近 30 天銷量排除 Cancelled 與超過 30 天的訂單。
+  - 非正數門檻回傳驗證失敗。
+- 完整 build：0 warnings、0 errors。
+- 完整測試：38 passed、0 failed、0 skipped。
+- Code review：無 production correctness、分層或 N+1 finding；
+  保留兩個低風險測試缺口（精確第 30 天瞬間、Web acceptance 自動化）。
+- 使用者已在瀏覽器確認低庫存頁面正常。
+- 狀態：驗證完成，建立練習 3 獨立 commit。
+
 ## 自我驗證（做到哪個階段答哪題）
 
 ### 第一階段 — Agentic Coding
