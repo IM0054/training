@@ -223,6 +223,24 @@
 - 使用者已在瀏覽器確認低庫存頁面正常。
 - 狀態：驗證完成，建立練習 3 獨立 commit。
 
+### 練習 4 — `CreateOrderAsync` 小型重構
+
+- 重構前先提出計畫，經使用者確認後才修改。
+- 只修改 `OrderService` 的內部結構：
+  - 把明細非空、數量及重複商品驗證抽成
+    `ValidateOrderLines`。
+  - 把商品查詢、停售／庫存驗證、扣庫存及建立明細抽成
+    `AddValidatedOrderItemsAsync`。
+  - `CreateOrderAsync` 保留流程協調、建立訂單與保存。
+- 沒有改變公開介面、錯誤訊息、驗證順序、價格快照、扣庫存或保存時機。
+- Focused `CreateOrderAsync` 測試：11 passed、0 failed。
+- 完整測試：38 passed、0 failed、0 skipped。
+- Code review：無 finding；確認包含先遇到有效商品、後遇到錯誤商品時的
+  既有 tracked state 行為也沒有被重構意外改變。
+- 改善：主方法更容易閱讀，各段驗證職責有清楚名稱。
+- 沒有改變：任何商業規則、資料庫行為與使用者可見結果。
+- 狀態：驗證完成，建立練習 4 獨立 commit。
+
 ## 自我驗證（做到哪個階段答哪題）
 
 ### 第一階段 — Agentic Coding
