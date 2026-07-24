@@ -19,7 +19,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/log-edits.ps1",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -File .codex/hooks/log-edits-codex.ps1",
             "statusMessage": "Logging edited files"
           }
         ]

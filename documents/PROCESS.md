@@ -108,6 +108,13 @@
 - 建立 `.agents/skills/fix-bug/SKILL.md`。
 - 完整測試基線：28 passed、0 failed。
 - Commit：`506bb3a chore: configure Codex guardrails and bug-fix workflow`
+- 完成練習後同步 upstream commit `647c035 fix codex scripts path`：
+  - 原始 checkout 的指南使用 `log-edits.ps1`；upstream 後來新增
+    `log-edits-codex.ps1` 並修正指南路徑。
+  - 實際專案 hook 也重新命名為 `log-edits-codex.ps1`，同步更新
+    `.codex/hooks.json`。
+  - 手動送入 `apply_patch` payload 驗證，成功記錄
+    `hook-validation.txt` 並輸出 `systemMessage`。
 
 ### 練習 2 — Bug 1：訂單分頁
 
